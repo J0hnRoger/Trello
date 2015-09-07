@@ -21,16 +21,18 @@ namespace app.trello {
         }
         
         createCard(card : ICard) {
+            var deferred = this.$q.defer();
             this.TrelloApi.Authenticate().then(() => {
                     this.TrelloApi.Rest('POST', 'cards/?name='+ card.title +'&desc='+ card.description +'&idList=' + this.listId 
                         + '&labels=' + card.stringifiedLabels()
                         + '&idMembers=' + card.stringifiedMembers())
                         .then((card : JSON) => {
-                            this.logger.info(card);
+                            deferred.resolve(card);
                         }); 
                 }, function(){
                     this.logger.error('no');
                 });
+                return deferred.promise;
         }
         
         getMembers() : ng.IPromise<Member[]> {

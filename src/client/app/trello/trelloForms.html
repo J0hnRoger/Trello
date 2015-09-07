@@ -52,7 +52,8 @@
                                 <button type="submit" class="btn btn-default" ng-click="vm.createCard()">Créer le ticket</button>
                                 </div>
                             </div>
-                            <div class="panel panel-default">
+                            <div class="panel panel-default" ng-class="{ 'isAdded' : vm.isAdded }">
+                                {{vm.isAdded}}
                                 <div class="panel-heading">{{vm.card.title}}
                                    <span ng-repeat="label in vm.card.labels" class="label label-primary trello-labels" style="background-color: {{label}}; color: {{label}}">{{label}}</span>
                                 </div>

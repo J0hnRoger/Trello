@@ -19,16 +19,18 @@ var app;
             }
             TrelloService.prototype.createCard = function (card) {
                 var _this = this;
+                var deferred = this.$q.defer();
                 this.TrelloApi.Authenticate().then(function () {
                     _this.TrelloApi.Rest('POST', 'cards/?name=' + card.title + '&desc=' + card.description + '&idList=' + _this.listId
                         + '&labels=' + card.stringifiedLabels()
                         + '&idMembers=' + card.stringifiedMembers())
                         .then(function (card) {
-                        _this.logger.info(card);
+                        deferred.resolve(card);
                     });
                 }, function () {
                     this.logger.error('no');
                 });
+                return deferred.promise;
             };
             TrelloService.prototype.getMembers = function () {
                 var deferred = this.$q.defer();

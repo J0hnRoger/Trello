@@ -7,6 +7,7 @@ module app.trello {
 		members : Member[];
 		ticketUrl : string = "http://www.google.fr";
 		ticketId : number = 42;
+		isAdded : boolean = false;
 		
 		static $inject : Array<string> = ["logger", "TrelloService"];
 		constructor(private logger : blocks.logger.Logger, private TrelloService : app.trello.TrelloService){
@@ -22,7 +23,14 @@ module app.trello {
 		
 		createCard() {
 			this.card.setUrlInDescription(this.ticketId, this.ticketUrl);
-			this.TrelloService.createCard(this.card);
+			this.card.setTitleTicketId(this.ticketId);
+			
+			this.TrelloService.createCard(this.card)
+				.then((card : ICard) => {
+					this.isAdded = true;
+					this.card = new Ticket("", "", [], []);
+					this.isAdded = false;
+				});
 		}
 	}
 	

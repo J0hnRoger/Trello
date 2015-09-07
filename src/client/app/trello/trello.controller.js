@@ -9,6 +9,7 @@ var app;
                 this.TrelloService = TrelloService;
                 this.ticketUrl = "http://www.google.fr";
                 this.ticketId = 42;
+                this.isAdded = false;
                 this.card = new trello.Ticket("test", "description", [], []);
                 TrelloService.getLabels().then(function (dataLabels) {
                     _this.labels = dataLabels;
@@ -18,8 +19,15 @@ var app;
                 });
             }
             TrelloController.prototype.createCard = function () {
+                var _this = this;
                 this.card.setUrlInDescription(this.ticketId, this.ticketUrl);
-                this.TrelloService.createCard(this.card);
+                this.card.setTitleTicketId(this.ticketId);
+                this.TrelloService.createCard(this.card)
+                    .then(function (card) {
+                    _this.isAdded = true;
+                    _this.card = new trello.Ticket("", "", [], []);
+                    _this.isAdded = false;
+                });
             };
             TrelloController.$inject = ["logger", "TrelloService"];
             return TrelloController;

@@ -4,9 +4,12 @@ module app.trello {
 		description : string;
 		labels : string[];
 		assignedTo : Member[];
+		
 		stringifiedLabels() : string;
 		stringifiedMembers() : string;
+		
 		setUrlInDescription(id : number, url : string) : void;
+		setTitleTicketId(id : number) : void;
 	}
 	
 	export class Ticket implements ICard {
