@@ -3,14 +3,28 @@
         <div class="container">
             <div class="row">
                 <div class="widget">
-                    <div ht-widget-header title="{{vm.title}}"></div>
+                    <div ht-widget-header title="{{vm.title}}">
+                    </div>
+                        <button class="btn btn-primary" ng-click="TrelloApi.Deauthentificate();">Renew the Token</button>
                     <div class="widget-content user">
                         <h3>{{vm.title}}</h3>
                         <form class="form-horizontal">
+                             <div class="form-group">
+                                <label for="txtId" class="col-sm-2 control-label">Id du ticket</label>
+                                <div class="col-sm-10">
+                                <input ng-model="vm.ticketId" type="number" class="form-control" id="txtId" >
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="txtTitle" class="col-sm-2 control-label">Title</label>
                                 <div class="col-sm-10">
                                 <input ng-model="vm.card.title" type="text" class="form-control" id="txtTitle" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtTitle" class="col-sm-2 control-label">Lien du ticket</label>
+                                <div class="col-sm-10">
+                                <input ng-model="vm.ticketUrl" type="url" class="form-control" id="txtTitle" >
                                 </div>
                             </div>
                             <div class="form-group">
@@ -20,8 +34,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">Project</label>
+                                <label for="" class="col-sm-2 control-label">Labels</label>
+                                <div class="col-sm-offset-2 col-sm-10">
+                                   <span ng-repeat="(color,project) in vm.labels" class="label label-primary trello-labels" style="background-color: {{color}}" ng-click="vm.card.labels.push(color)">{{project}}</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="" class="col-sm-2 control-label">Assigner à :</label>
                                 <div class="col-sm-10">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn" ng-repeat="member in vm.members" ng-click="vm.card.assignedTo.push(member)">{{member.fullName}}</button>
+                                    </div>
                                 </div>
                             </div>
                              <div class="form-group">
@@ -29,6 +52,15 @@
                                 <button type="submit" class="btn btn-default" ng-click="vm.createCard()">Créer le ticket</button>
                                 </div>
                             </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">{{vm.card.title}}
+                                   <span ng-repeat="label in vm.card.labels" class="label label-primary trello-labels" style="background-color: {{label}}; color: {{label}}">{{label}}</span>
+                                </div>
+                                <div class="panel-body">
+                                    {{vm.card.description}}
+                                </div>
+                                <b>Assigné à : </b> <span ng-repeat="member in vm.card.assignedTo">{{member.fullName}} ;</span> 
+                                </div>
                         </form>
                     </div>
                     <div class="widget-foot">
